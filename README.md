@@ -1,9 +1,9 @@
 
-# Hierarhical Agglomerative Clustering - Lab
+# Hierarhical Agglomerative Clustering - Codealong
 
 ## Introduction
 
-In this lab, we'll work through a code-along to to observe how Hierarchical Agglomerative Clustering works by examining various visualizations at each step of the algorithm. 
+In this codealong, we'll work through a code-along to to observe how Hierarchical Agglomerative Clustering works by examining various visualizations at each step of the algorithm. 
 
 ## Objectives
 
@@ -15,9 +15,9 @@ You will be able to:
 
 ## Getting Started
 
-In this lab, we'll create a sample dataset, and then use HAC and observe the decisions it makes at each step as it identifies and merges similar clusters at each step. 
+In this codealong, we'll create a sample dataset, and then use HAC and observe the decisions it makes at each step as it identifies and merges similar clusters at each step. 
 
-To get started, we need to create a dataset. Let's start by running the cell below to import everything we'll need for this lab. 
+To get started, we need to create a dataset. Let's start by running the cell below to import everything we'll need for this kmeans_lab_for_testing.ipynb. 
 
 
 ```python
@@ -46,7 +46,7 @@ plt.scatter(X[:, 0], X[:, 1], c = y, s = 10);
 ```
 
 
-![png](output_4_0.png)
+![png](index_files/index_4_0.png)
 
 
 Nexts, we'll use `AgglomerativeClustering` with one parameter `n_clusters=3` to run the algorithm. Not specifying a linkage function will lead to the usage of the `wald` linkage criterion.
@@ -66,14 +66,14 @@ plt.scatter(X[:, 0], X[:, 1], c = assigned_clust, s = 10);
 ```
 
 
-![png](output_6_0.png)
+![png](index_files/index_6_0.png)
 
 
 As you can see the algorithm did pretty well. It got a couple points wrong, but the ones it got wrong seem pretty reasonable, in that they are very close to other clusters. 
 
 ## Visualizing How HAC Works
 
-Just like K-Means Clustering, using the HAC algorithm to make cluster predictions on a dataset certainly seems simple enough, thanks to the simplicity of scikit-learn's API. However, for thisn lab, we'd like to get a better look at exactly what is happening during each step of the algorithm.  To do this, we'll borrow some code from the book "Introduction to Machine Learning with Python", by Andreas Müller and Sarah Guido--Andreas is the core contributor to scikit-learn, and the book Sarah and he created contains many great examples of how each algorithm works. In this case, they created several functions that we'll use to visualize the propagation of Agglomerative clustering algorithms (among others). We slightly adapted these functions and stored them in two `.py`-files in the course repository. 
+Just like K-Means Clustering, using the HAC algorithm to make cluster predictions on a dataset certainly seems simple enough, thanks to the simplicity of scikit-learn's API. However, for this time, we'd like to get a better look at exactly what is happening during each step of the algorithm.  To do this, we'll borrow some code from the book "Introduction to Machine Learning with Python", by Andreas Müller and Sarah Guido--Andreas is the core contributor to scikit-learn, and the book Sarah and he created contains many great examples of how each algorithm works. In this case, they created several functions that we'll use to visualize the propagation of Agglomerative clustering algorithms (among others). We slightly adapted these functions and stored them in two `.py`-files in the course repository. 
 
 The functions can be found here: https://github.com/amueller/mglearn/tree/master/mglearn
 
@@ -90,7 +90,7 @@ plot_agglomerative_algorithm()
 ```
 
 
-![png](output_10_0.png)
+![png](index_files/index_10_0.png)
 
 
 This very informative graph shows every step of the linkage (note that the dataset in the pictures is not the one we created above). In the very first step, each data point represents one cluster. Then in every step, 2 clusters (with cluster meaning either a single data point or a cluster of points that has been created in a previous step) that are closest are merged.
@@ -109,7 +109,7 @@ plot_agglomerative()
 ```
 
 
-![png](output_14_0.png)
+![png](index_files/index_14_0.png)
 
 
 When you have real data and not intentionally generated clusters, these visualizations are very useful to identify whether you actually selected the right value for $k$. However, if you have more than just 2 features, visualizing becomes tricky. A 3D plot is still feasible, but you won't be able do this when you have more than 3 features. A very helpful visualization technique is creationg _dendograms_. Let's create one in the next section.
@@ -146,12 +146,12 @@ plt.ylabel("Cluster distance")
 
 
 
-    Text(0, 0.5, 'Cluster distance')
+    Text(0,0.5,'Cluster distance')
 
 
 
 
-![png](output_18_1.png)
+![png](index_files/index_18_1.png)
 
 
 So how to interpret this dendogram? At the very bottom of the dendogram, the data points are represented as individual cluster. Moving up, first clusters start to form, starting with data points 12 and 15, and next data points 2 and 6, next 4 and 5, etc, until all the clusters are merged together. This along with the plot created trough `plot_agglomerative()` gives basically a complete view of how clusters are created using the ward algorithm. 
@@ -175,7 +175,7 @@ plt.scatter(X[:, 0], X[:, 1], c = y, s = 10);
 ```
 
 
-![png](output_22_0.png)
+![png](index_files/index_22_0.png)
 
 
 Now, we'll create 3 different versions of the HAC algorithm, and see how different linkage setting affect the performance of each. 
@@ -201,7 +201,7 @@ plt.scatter(X[:, 0], X[:, 1], c = as_comp, s = 10);
 ```
 
 
-![png](output_26_0.png)
+![png](index_files/index_26_0.png)
 
 
 Now, `linkage='average'`:
@@ -212,7 +212,7 @@ plt.scatter(X[:, 0], X[:, 1], c = as_avg, s = 10);
 ```
 
 
-![png](output_28_0.png)
+![png](index_files/index_28_0.png)
 
 
 And finally, `linkage='ward'`:
@@ -223,7 +223,7 @@ plt.scatter(X[:, 0], X[:, 1], c = as_ward, s = 10);
 ```
 
 
-![png](output_30_0.png)
+![png](index_files/index_30_0.png)
 
 
 The results look all pretty similar, except for some small differences in the two upper left clusters. 
@@ -246,7 +246,7 @@ plt.ylabel("Cluster distance");
 ```
 
 
-![png](output_32_0.png)
+![png](index_files/index_32_0.png)
 
 
 We have 400 cases here, which makes the dendogram look messy. We're mostly interested in in the last few clusters anyways. Let's truncate the diagram to make it more interpretable and see how it looks. 
@@ -261,7 +261,7 @@ plt.show()
 ```
 
 
-![png](output_34_0.png)
+![png](index_files/index_34_0.png)
 
 
 ## Evaluation
@@ -282,7 +282,7 @@ plt.scatter(cl_centers[:, 0], cl_centers[:, 1], c='black', s=40);
 ```
 
 
-![png](output_37_0.png)
+![png](index_files/index_37_0.png)
 
 
 We have ran 4 algorithms in total now, all stored as follows:
@@ -380,7 +380,7 @@ metrics.fowlkes_mallows_score(labels_kmeans, y)
 
 
 
-    0.9749543352953763
+    0.9749543352953765
 
 
 
@@ -404,7 +404,7 @@ metrics.fowlkes_mallows_score(labels_avg, y)
 
 
 
-    0.9609163225853565
+    0.9609163225853564
 
 
 
@@ -416,7 +416,7 @@ metrics.fowlkes_mallows_score(labels_comp, y)
 
 
 
-    0.9269904799684048
+    0.9269904799684047
 
 
 
@@ -530,4 +530,4 @@ metrics.silhouette_score(X, labels_comp)
 
 ## Summary
 
-In this lab, we learned how to create, fit, and interpret results for Hierarchical Agglomerative Clustering algorithms! We took a look at the decisions taken by the algorithm at each step to merge similar clusters, compared results for 3 different linkage criteria, and even created and interpreted a Dendrogram of results!
+In this codealong, we learned how to create, fit, and interpret results for Hierarchical Agglomerative Clustering algorithms! We took a look at the decisions taken by the algorithm at each step to merge similar clusters, compared results for 3 different linkage criteria, and even created and interpreted a Dendrogram of results!
