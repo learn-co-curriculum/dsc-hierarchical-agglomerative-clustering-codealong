@@ -45,10 +45,6 @@ X, y = make_blobs(n_samples= m, n_features=2, centers=k, cluster_std=1.3)
 plt.scatter(X[:, 0], X[:, 1], c = y, s = 10);
 ```
 
-
-![png](index_files/index_4_0.png)
-
-
 Nexts, we'll use `AgglomerativeClustering` with one parameter `n_clusters=3` to run the algorithm. Not specifying a linkage function will lead to the usage of the `wald` linkage criterion.
 
 Run the cell below. This cell will:
@@ -64,10 +60,6 @@ agg_clust
 assigned_clust = agg_clust.fit_predict(X)
 plt.scatter(X[:, 0], X[:, 1], c = assigned_clust, s = 10);
 ```
-
-
-![png](index_files/index_6_0.png)
-
 
 As you can see the algorithm did pretty well. It got a couple points wrong, but the ones it got wrong seem pretty reasonable, in that they are very close to other clusters. 
 
@@ -89,10 +81,6 @@ from plot_agg_alg import plot_agglomerative_algorithm
 plot_agglomerative_algorithm()
 ```
 
-
-![png](index_files/index_10_0.png)
-
-
 This very informative graph shows every step of the linkage (note that the dataset in the pictures is not the one we created above). In the very first step, each data point represents one cluster. Then in every step, 2 clusters (with cluster meaning either a single data point or a cluster of points that has been created in a previous step) that are closest are merged.
 Note that `plot_agglomerative_algorithm()` actually even goes beyond the specified endpoint of 3 clusters and shows what the result would be if we'd have 2 clusters too. 
 
@@ -108,17 +96,13 @@ from plot_agg import plot_agglomerative #file in the repo
 plot_agglomerative()
 ```
 
+When you have real data and not intentionally generated clusters, these visualizations are very useful to identify whether you actually selected the right value for $k$. However, if you have more than just 2 features, visualizing becomes tricky. A 3D plot is still feasible, but you won't be able do this when you have more than 3 features. A very helpful visualization technique is creationg _dendrograms_. Let's create one in the next section.
 
-![png](index_files/index_14_0.png)
+## Dendrograms
 
+Unfortunately, `scikit-learn` doesn't provide the functionality to create dendrograms. Luckily though, you can easily create them using `SciPy`. In fact, SciPy provides algorithms for more linkage criteria than `Scikit-learn` does. A full overview can be found here: https://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html#module-scipy.cluster.hierarchy.
 
-When you have real data and not intentionally generated clusters, these visualizations are very useful to identify whether you actually selected the right value for $k$. However, if you have more than just 2 features, visualizing becomes tricky. A 3D plot is still feasible, but you won't be able do this when you have more than 3 features. A very helpful visualization technique is creationg _dendograms_. Let's create one in the next section.
-
-## Dendograms
-
-Unfortunately, `scikit-learn` doesn't provide the functionality to create dendograms. Luckily though, you can easily create them using `SciPy`. In fact, SciPy provides algorithms for more linkage criteria than `Scikit-learn` does. A full overview can be found here: https://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html#module-scipy.cluster.hierarchy.
-
-When you install `ward` from `scipy.cluster.hierarchy`, what Scipy does is it takes the data array `X` and it computes a linkage array, which encodes hierarchical cluster similarities. Feeding this array into the `dendogram` function, dendograms can be created!
+When you install `ward` from `scipy.cluster.hierarchy`, what Scipy does is it takes the data array `X` and it computes a linkage array, which encodes hierarchical cluster similarities. Feeding this array into the `dendrogram` function, dendrograms can be created!
 
 Run the cell below to create a **_Dendrogram_** visualization. 
 
@@ -143,18 +127,7 @@ plt.xlabel("Data index")
 plt.ylabel("Cluster distance")
 ```
 
-
-
-
-    Text(0,0.5,'Cluster distance')
-
-
-
-
-![png](index_files/index_18_1.png)
-
-
-So how to interpret this dendogram? At the very bottom of the dendogram, the data points are represented as individual cluster. Moving up, first clusters start to form, starting with data points 12 and 15, and next data points 2 and 6, next 4 and 5, etc, until all the clusters are merged together. This along with the plot created trough `plot_agglomerative()` gives basically a complete view of how clusters are created using the ward algorithm. 
+So how to interpret this dendrogram? At the very bottom of the dendrogram, the data points are represented as individual cluster. Moving up, first clusters start to form, starting with data points 12 and 15, and next data points 2 and 6, next 4 and 5, etc, until all the clusters are merged together. This along with the plot created trough `plot_agglomerative()` gives basically a complete view of how clusters are created using the ward algorithm. 
 
 
 Let's look at the y-axis next. the length of how far each branch is apart also shows how far apart the merged clusters are. If branches to go from k to k-1 clusters are very long, it means that the merged clusters are far apart. It might then make sense to stick to k clusters!
@@ -173,10 +146,6 @@ X, y = make_blobs(n_samples= m, n_features=2, centers=k, cluster_std=0.8,  rando
 
 plt.scatter(X[:, 0], X[:, 1], c = y, s = 10);
 ```
-
-
-![png](index_files/index_22_0.png)
-
 
 Now, we'll create 3 different versions of the HAC algorithm, and see how different linkage setting affect the performance of each. 
 
@@ -200,20 +169,12 @@ Let's start by visualizing the predictions made by the model using `'linkage=com
 plt.scatter(X[:, 0], X[:, 1], c = as_comp, s = 10);
 ```
 
-
-![png](index_files/index_26_0.png)
-
-
 Now, `linkage='average'`:
 
 
 ```python
 plt.scatter(X[:, 0], X[:, 1], c = as_avg, s = 10);
 ```
-
-
-![png](index_files/index_28_0.png)
-
 
 And finally, `linkage='ward'`:
 
@@ -222,13 +183,9 @@ And finally, `linkage='ward'`:
 plt.scatter(X[:, 0], X[:, 1], c = as_ward, s = 10);
 ```
 
-
-![png](index_files/index_30_0.png)
-
-
 The results look all pretty similar, except for some small differences in the two upper left clusters. 
 
-Now, let's look at the dendogram for the ward cluster.
+Now, let's look at the dendrogram for the ward cluster.
 
 
 ```python
@@ -245,11 +202,7 @@ plt.xlabel("Sample index")
 plt.ylabel("Cluster distance");
 ```
 
-
-![png](index_files/index_32_0.png)
-
-
-We have 400 cases here, which makes the dendogram look messy. We're mostly interested in in the last few clusters anyways. Let's truncate the diagram to make it more interpretable and see how it looks. 
+We have 400 cases here, which makes the dendrogram look messy. We're mostly interested in in the last few clusters anyways. Let's truncate the diagram to make it more interpretable and see how it looks. 
 
 
 ```python
@@ -260,13 +213,9 @@ plt.ylabel('distance')
 plt.show()
 ```
 
-
-![png](index_files/index_34_0.png)
-
-
 ## Evaluation
 
-Now, let's run our k-means clustering algorithm again, because we'll want to evaluate all our methods alltogether. 
+Now let’s run a k-means clustering algorithm and compare its performance to the hierarchical clustering algorithms.
 
 
 ```python
@@ -280,10 +229,6 @@ plt.scatter(X[:, 0], X[:, 1], c = y_hat, s = 10)
 cl_centers = k_means.cluster_centers_
 plt.scatter(cl_centers[:, 0], cl_centers[:, 1], c='black', s=40);
 ```
-
-
-![png](index_files/index_37_0.png)
-
 
 We have ran 4 algorithms in total now, all stored as follows:
 
@@ -324,23 +269,9 @@ metrics.adjusted_rand_score(labels_kmeans, y)
 ```
 
 
-
-
-    0.9700191267241777
-
-
-
-
 ```python
 metrics.adjusted_rand_score(labels_ward, y)
 ```
-
-
-
-
-    0.9701102539985723
-
-
 
 
 ```python
@@ -348,23 +279,9 @@ metrics.adjusted_rand_score(labels_avg, y)
 ```
 
 
-
-
-    0.9532034914705111
-
-
-
-
 ```python
 metrics.adjusted_rand_score(labels_comp, y)  
 ```
-
-
-
-
-    0.9124580390976879
-
-
 
 ## Fowlkes-Mallows score
 
@@ -378,23 +295,9 @@ metrics.fowlkes_mallows_score(labels_kmeans, y)
 ```
 
 
-
-
-    0.9749543352953765
-
-
-
-
 ```python
 metrics.fowlkes_mallows_score(labels_ward, y)
 ```
-
-
-
-
-    0.9750304619710456
-
-
 
 
 ```python
@@ -402,23 +305,9 @@ metrics.fowlkes_mallows_score(labels_avg, y)
 ```
 
 
-
-
-    0.9609163225853564
-
-
-
-
 ```python
 metrics.fowlkes_mallows_score(labels_comp, y)  
 ```
-
-
-
-
-    0.9269904799684047
-
-
 
 ## Calinski-Harabaz Index
 
@@ -432,23 +321,9 @@ metrics.calinski_harabaz_score(X, labels_kmeans)
 ```
 
 
-
-
-    3174.11496248782
-
-
-
-
 ```python
 metrics.calinski_harabaz_score(X,labels_ward)
 ```
-
-
-
-
-    3138.607529679967
-
-
 
 
 ```python
@@ -456,23 +331,9 @@ metrics.calinski_harabaz_score(X,labels_avg)
 ```
 
 
-
-
-    3074.3514930868614
-
-
-
-
 ```python
 metrics.calinski_harabaz_score(X,labels_comp)  
 ```
-
-
-
-
-    2865.422513540867
-
-
 
 ## Silhouette Coefficient
 
@@ -486,23 +347,9 @@ metrics.silhouette_score(X, labels_kmeans)
 ```
 
 
-
-
-    0.6933893339039693
-
-
-
-
 ```python
 metrics.silhouette_score(X, labels_ward) 
 ```
-
-
-
-
-    0.6900802954648233
-
-
 
 
 ```python
@@ -510,23 +357,9 @@ metrics.silhouette_score(X,labels_avg)
 ```
 
 
-
-
-    0.6836833952775418
-
-
-
-
 ```python
 metrics.silhouette_score(X, labels_comp)  
 ```
-
-
-
-
-    0.662633317088521
-
-
 
 ## Summary
 
