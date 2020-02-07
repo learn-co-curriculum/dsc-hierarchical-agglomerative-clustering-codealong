@@ -1,20 +1,19 @@
-
 # Hierarchical Agglomerative Clustering - Codealong
 
 ## Introduction
 
-In this codealong, you'll work through a code-along to observe how hierarchical agglomerative clustering works by examining various visualizations at each step of the algorithm. 
+In this codealong, you'll observe how hierarchical agglomerative clustering works by examining various visualizations at each step of the algorithm. 
 
 ## Objectives
 
 You will be able to:
 
 - Determine the best linkage strategy for a dataset by creating clusters and evaluating the results 
-- Create and interpret a dendogram while using HAC to determine the optimal number of clusters 
+- Create and interpret a dendrogram while using HAC to determine the optimal number of clusters 
 
 ## Getting Started
 
-In this codealong, we'll create a sample dataset, and then use HAC and observe the decisions it makes at each step as it identifies and merges similar clusters at each step. 
+In this codealong, we'll create a sample dataset, and then use HAC and observe the decisions it makes at each step as it identifies and merges similar clusters. 
 
 Run the cell below to import everything we'll need: 
 
@@ -33,7 +32,7 @@ import pandas as pd
 
 To understand how hierarchical clustering works, we'll look at a dataset with 16 data points that belong to 3 clusters. 
 
-Run the cell below to create and visualize this dataset. As with the dataset we created in our K-Means lab, our visualization will use different colors to differentiate the clusters. 
+Run the cell below to create and visualize this dataset. As with the dataset we created in our k-means lab, our visualization will use different colors to differentiate the clusters. 
 
 
 ```python
@@ -45,13 +44,13 @@ X, y = make_blobs(n_samples= m, n_features=2, centers=k, cluster_std=1.3)
 plt.scatter(X[:, 0], X[:, 1], c=y, s=10);
 ```
 
-Nexts, we'll use `AgglomerativeClustering` with one parameter `n_clusters=3` to run the algorithm. Not specifying a linkage function will lead to the usage of the `'wald'` linkage criterion.
+Nexts, we'll use `AgglomerativeClustering` with one parameter, `n_clusters=3`, to run the algorithm. Not specifying a linkage function will lead to the usage of the `'wald'` linkage criterion.
 
 Run the cell below. This cell will:
 
-- Instantiate an `AgglomerativeClustering` object and set the number of clusters it will stop at at 3 
+- Instantiate an `AgglomerativeClustering` object and set the number of clusters it will stop at to 3 
 - Fit the clustering object to the data and then assign predictions for each point 
-- Visualize the data, with the color signifying the predictions made by our clustering algorithm. 
+- Visualize the data with the color signifying the predictions made by our clustering algorithm. 
 
 
 ```python
@@ -60,11 +59,11 @@ assigned_clust = agg_clust.fit_predict(X)
 plt.scatter(X[:, 0], X[:, 1], c=assigned_clust, s=10);
 ```
 
-As you can see the algorithm did pretty well. It got a couple points wrong, but the ones it got wrong seem pretty reasonable, in that they are very close to other clusters. 
+As you can see the algorithm did pretty well. It got a couple points wrong, but the ones it got wrong seem reasonable, in that they are very close to other clusters. 
 
 ## Visualizing How HAC Works
 
-Just like K-means clustering, using the HAC algorithm to make cluster predictions on a dataset certainly seems simple enough, thanks to the simplicity of scikit-learn's API. However, this time, we'd like to get a better look at exactly what is happening during each step of the algorithm.  To do this, we'll borrow some code from the book "Introduction to Machine Learning with Python", by Andreas Müller and Sarah Guido -- Andreas is the core contributor to scikit-learn, and the book Sarah and he created contains many great examples of how each algorithm works. In this case, they created several functions that we'll use to visualize the propagation of Agglomerative clustering algorithms (among others). We slightly adapted these functions and stored them in two `.py`-files in the course repository. 
+Just like K-means clustering, using the HAC algorithm to make cluster predictions on a dataset certainly seems simple enough, thanks to the simplicity of scikit-learn's API. However, this time, we'd like to get a better look at exactly what is happening during each step of the algorithm.  To do this, we'll borrow some code from the book "Introduction to Machine Learning with Python", by Andreas Müller and Sarah Guido -- Andreas is the core contributor to scikit-learn, and the book Sarah and he created contains many great examples of how each algorithm works. In this case, they created several functions that we'll use to visualize the propagation of agglomerative clustering algorithms (among others). We slightly adapted these functions and stored them in two `.py`-files in the course repository. 
 
 The functions can be found here: https://github.com/amueller/mglearn/tree/master/mglearn . 
 
@@ -80,9 +79,9 @@ from plot_agg_alg import plot_agglomerative_algorithm
 plot_agglomerative_algorithm()
 ```
 
-This very informative graph shows every step of the linkage (note that the dataset in the pictures is not the one we created above). In the very first step, each data point represents one cluster. Then in every step, two clusters (with cluster meaning either a single data point or a cluster of points that has been created in a previous step) that are closest are merged. Note that `plot_agglomerative_algorithm()` actually even goes beyond the specified endpoint of three clusters and shows what the result would be if we'd have 2 clusters too. 
+This very informative graph shows every step of the linkage (note that the dataset in the pictures is not the one we created above). In the very first step, each data point represents one cluster. Then in every step, two clusters (with cluster meaning either a single data point or a cluster of points that has been created in a previous step) that are closest are merged. Note that `plot_agglomerative_algorithm()` actually even goes beyond the specified endpoint of three clusters and shows what the result would be if we had specified 2 clusters instead. 
 
-Next, let's  import `plot_agglomerative` from `plot_agg` and run this function as well. This function gives us another view on the clustering technique, as it shows an overlay of all possible clusterings. This way, it creates an overview of how each cluster breaks up into smaller clusters.
+Next, let's import `plot_agglomerative` from `plot_agg` and run this function as well. This function gives us another view on the clustering technique, as it shows an overlay of all possible clusterings. This way, it creates an overview of how each cluster breaks up into smaller clusters.
 
 
 ```python
@@ -94,13 +93,13 @@ from plot_agg import plot_agglomerative # File in the repo
 plot_agglomerative()
 ```
 
-When you have real data and not intentionally generated clusters, these visualizations are very useful to identify whether you actually selected the right value for $k$. However, if you have more than just two features, visualizing becomes tricky. A 3D plot is still feasible, but you won't be able do this when you have more than three features. A very helpful visualization technique is creating _dendrograms_. Let's create one in the next section.
+When you have real data and not intentionally generated clusters, these visualizations are very useful to identify whether you actually selected the right value for $k$. However, if you have more than just two features, visualizing becomes tricky. A 3D plot is still feasible, but you won't be able to do this when you have more than three features. A very helpful visualization technique is creating _dendrograms_. Let's create one in the next section.
 
 ## Dendrograms
 
 Unfortunately, scikit-learn doesn't provide the functionality to create dendrograms. Luckily though, you can easily create them using SciPy. In fact, SciPy provides algorithms for more linkage criteria than scikit-learn does. A full overview can be found [here](https://docs.scipy.org/doc/scipy/reference/cluster.hierarchy.html#module-scipy.cluster.hierarchy).
 
-`ward()` takes the data array `X` and it computes a linkage array, which encodes hierarchical cluster similarities. You can then create a dendogram by feeding this array into the `dendrogram()` function. 
+`ward()` takes the data array `X` and it computes a linkage array, which encodes hierarchical cluster similarities. You can then create a dendrogram by feeding this array into the `dendrogram()` function. 
 
 
 ```python
@@ -124,13 +123,13 @@ plt.ylabel('Cluster distance')
 plt.show()
 ```
 
-So how to interpret this dendrogram? At the very bottom of the dendrogram, the data points are represented as individual cluster. Moving up, first clusters start to form, starting with data points 12 and 15, and next data points 2 and 6, next 4 and 5, etc, until all the clusters are merged together. This along with the plot created through `plot_agglomerative()` gives basically a complete view of how clusters are created using the ward algorithm. 
+So how to interpret this dendrogram? At the very bottom of the dendrogram, the data points are represented as individual clusters. Moving up, the first merged clusters start to form, starting with data points 12 and 15, and next data points 2 and 6, next 4 and 5, etc, until all the clusters are merged together. This along with the plot created through `plot_agglomerative()` gives basically a complete view of how clusters are created using the ward algorithm. 
 
-Let's look at the y-axis next. the length of how far each branch is apart also shows how far apart the merged clusters are. If branches to go from $k$ to $k-1$ clusters are very long, it means that the merged clusters are far apart. It might then make sense to stick to $k$ clusters!
+Let's look at the y-axis next. The length of how far each branch is apart also shows how far apart the merged clusters are. If branches to go from $k$ to $k-1$ clusters are very long, it means that the merged clusters are far apart. It might then make sense to stick to $k$ clusters!
 
 ## Going back to the 6 cluster dataset
 
-Let's generate a dataset like the one we created for K-means clustering and apply hierarchical clustering here.
+Let's generate a dataset like the one we created for k-means clustering and apply hierarchical clustering here.
 
 Run the cell below to create and visualize the sample dataset.
 
@@ -179,7 +178,7 @@ And finally, `linkage='ward'`:
 plt.scatter(X[:, 0], X[:, 1], c = as_ward, s = 10);
 ```
 
-The results look all pretty similar, except for some small differences in the two upper left clusters. 
+The results all look pretty similar, except for some small differences in the two upper left clusters. 
 
 Now, let's look at the dendrogram for the ward cluster.
 
@@ -197,7 +196,7 @@ plt.xlabel('Sample index')
 plt.ylabel('Cluster distance');
 ```
 
-We have 400 cases here, which makes the dendrogram look messy. We're mostly interested in in the last few clusters anyways. Let's truncate the diagram to make it more interpretable and see how it looks. 
+We have 400 cases here, which makes the dendrogram look messy. We're mostly interested in the last few clusters anyway. Let's truncate the diagram to make it more interpretable and see how it looks. 
 
 
 ```python
@@ -210,7 +209,7 @@ plt.show()
 
 ## Evaluation
 
-Now let’s run a K-means clustering algorithm and compare its performance to the hierarchical clustering algorithms.
+Now let’s run a k-means clustering algorithm and compare its performance to the hierarchical clustering algorithms.
 
 
 ```python
@@ -245,7 +244,7 @@ We've already seen one or two of these metrics before -- let's take this opportu
 
 Run the cells below to see how each of the four algorithms we fit to the data compare.
 
-**_NOTE:_** Don't worry about memorizing each of these metrics -- just be aware that they exist. It's better to pick one (such as variance ratio), and use it reliably. You'll likely only break out the other metrics for special cases, or when you want a second opinion, as opposed to just going with the metric you usually use!
+**_NOTE:_** Don't worry about memorizing each of these metrics -- just be aware that they exist. It's better to pick one (such as variance ratio) and use it reliably. You'll likely only break out the other metrics for special cases, or when you want a second opinion, as opposed to just going with the metric you usually use!
 
 ## Adjusted Rand Index
 
@@ -332,7 +331,7 @@ metrics.calinski_harabasz_score(X,labels_comp)
 
 ## Silhouette coefficient
 
-Finally, [Silhouette score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html) is calculated using the mean intra-cluster distance, as well as the mean distance to the nearest cluster for each sample in the dataset. Note that the function below returns the mean Silhouette score for all samples, but you can also use it to get the Silhouette coefficient for a single point, in case you want to judge the fitness of a single point in a cluster. 
+Finally, [Silhouette score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.silhouette_score.html) is calculated using the mean intra-cluster distance, as well as the mean distance to the nearest cluster for each sample in the dataset. Note that the function below returns the mean Silhouette score for all samples, but you can also use it to get the Silhouette coefficient for a single point, in case you want to judge the fit of a single point in a cluster. 
 
 This metric is bounded between -1 and 1. Closer to -1 suggests incorrect clustering, while closer to +1 shows that each cluster is very dense. 
 
