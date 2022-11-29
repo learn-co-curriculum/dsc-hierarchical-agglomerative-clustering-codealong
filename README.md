@@ -303,9 +303,9 @@ metrics.fowlkes_mallows_score(labels_avg, y)
 metrics.fowlkes_mallows_score(labels_comp, y)  
 ```
 
-## Calinski-Harabaz Index
+## Calinski-Harabasz Index
 
-The [Calinski-Harabaz Index](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.calinski_harabaz_score.html) is a variance ratio measurement which measures the ratio between within-cluster dispersion and between-cluster dispersion. You'll often hear this metric referred as "variance ratio". 
+The [Calinski-Harabasz Index](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.calinski_harabasz_score.html) is a variance ratio measurement which measures the ratio between within-cluster dispersion and between-cluster dispersion. You'll often hear this metric referred as "variance ratio". 
 
 This score is not bounded. The higher, the better. 
 
